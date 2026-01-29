@@ -1,0 +1,10 @@
+[Unit]
+Description=Disinfo Reporter
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/docker compose up reporter
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

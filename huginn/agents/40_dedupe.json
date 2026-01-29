@@ -1,0 +1,9 @@
+{
+  "name": "DeDup",
+  "type": "Agents::DeDuplicationAgent",
+  "schedule": "every_5m",
+  "options": {
+    "property": "dedupe_hash",
+    "expected_receive_period_in_days": 1
+  }
+}

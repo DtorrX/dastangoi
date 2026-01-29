@@ -1,0 +1,3 @@
+- Do not defame or assert certainty.
+- Only surface signals with direct textual support.
+- If evidence is weak, reduce confidence and say so.

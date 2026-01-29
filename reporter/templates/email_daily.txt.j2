@@ -1,0 +1,32 @@
+# Daily Signals Report ({{ report.date }})
+
+**Signals-only:** This report highlights indicators of possible coordinated narratives. Verify manually.
+
+## Executive Summary
+{% for item in report.executive_summary %}- {{ item }}
+{% endfor %}
+
+## Top Narratives
+| Narrative | Volume | Top Sources | Confidence |
+| --- | --- | --- | --- |
+{% for narrative in report.narratives %}| {{ narrative.narrative }} | {{ narrative.volume }} | {{ narrative.top_sources | join(', ') }} | {{ narrative.confidence }} |
+{% endfor %}
+
+## Notable Items
+{% for item in report.notable_items %}- **{{ item.title }}** ({{ item.source }}) score={{ item.signal_score }}
+  - {{ item.excerpt }}...
+  - {{ item.url }}
+  - Reasons: {{ item.rationale | join('; ') }}
+{% endfor %}
+
+## Network Signals
+{% for signal in report.network_signals %}- {{ signal.note }} (Domains: {{ signal.domains | join(', ') }})
+{% endfor %}
+
+## Recommendations
+{% for item in report.recommendations %}- {{ item }}
+{% endfor %}
+
+---
+Methodology: Signals-only heuristics + LLM classification. Limitations apply.
+Unsubscribe: {{ report.unsubscribe_url if report.unsubscribe_url else 'Contact support.' }}

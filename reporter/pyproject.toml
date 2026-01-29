@@ -1,0 +1,5 @@
+[project]
+name = "reporter"
+version = "0.1.0"
+description = "Daily report generator for disinfo signals"
+requires-python = ">=3.11"

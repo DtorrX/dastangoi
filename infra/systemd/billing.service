@@ -1,0 +1,10 @@
+[Unit]
+Description=Disinfo Billing
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/docker compose up billing
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

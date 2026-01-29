@@ -1,0 +1,10 @@
+[Unit]
+Description=Disinfo Mailer
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/docker compose up mailer
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Disinfo Signals Daily Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; color: #111; }
+    h1, h2 { color: #1f2937; }
+    .card { border: 1px solid #e5e7eb; padding: 12px; margin: 8px 0; }
+    .meta { color: #6b7280; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Daily Signals Report ({{ report.date }})</h1>
+  <p><strong>Signals-only:</strong> This report highlights indicators of possible coordinated narratives. Verify manually.</p>
+
+  <h2>Executive Summary</h2>
+  <ul>
+    {% for item in report.executive_summary %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Top Narratives</h2>
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr>
+      <th>Narrative</th>
+      <th>Volume</th>
+      <th>Top Sources</th>
+      <th>Confidence</th>
+    </tr>
+    {% for narrative in report.narratives %}
+      <tr>
+        <td>{{ narrative.narrative }}</td>
+        <td>{{ narrative.volume }}</td>
+        <td>{{ narrative.top_sources | join(', ') }}</td>
+        <td>{{ narrative.confidence }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <h2>Notable Items</h2>
+  {% for item in report.notable_items %}
+    <div class="card">
+      <strong>{{ item.title }}</strong>
+      <div class="meta">{{ item.source }} | Score: {{ item.signal_score }}</div>
+      <p>{{ item.excerpt }}...</p>
+      <p><a href="{{ item.url }}">Source</a></p>
+      <ul>
+        {% for reason in item.rationale %}
+          <li>{{ reason }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+
+  <h2>Network Signals</h2>
+  <ul>
+    {% for signal in report.network_signals %}
+      <li>{{ signal.note }} (Domains: {{ signal.domains | join(', ') }})</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Recommendations</h2>
+  <ul>
+    {% for item in report.recommendations %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+
+  <footer>
+    <p>Methodology: Signals-only heuristics + LLM classification. Limitations apply.</p>
+    <p>Unsubscribe: {{ report.unsubscribe_url if report.unsubscribe_url else 'Contact support.' }}</p>
+  </footer>
+</body>
+</html>

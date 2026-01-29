@@ -1,0 +1,4 @@
+thresholds:
+  min_confidence: 0.6
+  burst_threshold: 5
+  repetition_threshold: 3

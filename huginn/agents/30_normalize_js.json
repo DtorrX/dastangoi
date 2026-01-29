@@ -1,0 +1,9 @@
+{
+  "name": "Normalize",
+  "type": "Agents::JavaScriptAgent",
+  "schedule": "every_5m",
+  "options": {
+    "script": "// See huginn/templates/agent_js_normalize.js",
+    "expected_receive_period_in_days": 1
+  }
+}
