@@ -1,0 +1,5 @@
+[project]
+name = "mailer"
+version = "0.1.0"
+description = "Report email sender with unsubscribe support"
+requires-python = ">=3.11"

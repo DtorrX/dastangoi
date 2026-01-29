@@ -1,0 +1,11 @@
+{
+  "name": "GDELT API Sources",
+  "type": "Agents::JsonApiAgent",
+  "schedule": "every_30m",
+  "options": {
+    "expected_update_period_in_days": 1,
+    "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=china%20disinformation&format=json",
+    "type": "json",
+    "mode": "merge"
+  }
+}

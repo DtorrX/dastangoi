@@ -1,0 +1,9 @@
+{
+  "name": "LLM Classifier",
+  "type": "Agents::JavaScriptAgent",
+  "schedule": "every_10m",
+  "options": {
+    "script": "// See huginn/templates/agent_js_score.js",
+    "expected_receive_period_in_days": 1
+  }
+}

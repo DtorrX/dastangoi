@@ -1,0 +1,4 @@
+Text:
+{{text}}
+
+Return strictly valid JSON. Confidence must reflect available evidence.

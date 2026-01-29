@@ -1,0 +1,11 @@
+sources:
+  - name: GDELT Docs
+    type: api
+    url: https://api.gdeltproject.org/api/v2/doc/doc?query=china%20disinformation&format=json
+    tags: [gdelt, news]
+    languages: [en]
+  - name: State Dept RSS
+    type: rss
+    url: https://www.state.gov/rss/feed/
+    tags: [gov]
+    languages: [en]

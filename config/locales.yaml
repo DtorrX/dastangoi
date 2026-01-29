@@ -1,0 +1,4 @@
+locales:
+  include_languages: [en]
+  exclude_domains: []
+  region_focus: ["North America", "Europe"]

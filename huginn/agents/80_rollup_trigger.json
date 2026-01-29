@@ -1,0 +1,8 @@
+{
+  "name": "Daily Rollup Trigger",
+  "type": "Agents::ScheduleAgent",
+  "schedule": "cron:0 6 * * *",
+  "options": {
+    "timezone": "America/Toronto"
+  }
+}

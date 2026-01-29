@@ -1,0 +1,83 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    volumes:
+      - redis_data:/data
+
+  huginn:
+    image: huginn/huginn
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_ADAPTER: postgresql
+      DATABASE_HOST: postgres
+      DATABASE_NAME: ${POSTGRES_DB}
+      DATABASE_USERNAME: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      REDIS_URL: ${REDIS_URL}
+      APP_SECRET_TOKEN: ${HUGINN_WEBHOOK_SECRET}
+      REQUIRE_CONFIRMED_EMAIL: "false"
+      INVITATION_CODE: local
+    depends_on:
+      - postgres
+      - redis
+
+  reporter:
+    build: ./reporter
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      REPORT_ARCHIVE_PATH: ${REPORT_ARCHIVE_PATH}
+      REPORT_TIMEZONE: ${REPORT_TIMEZONE}
+      REPORT_CUTOFF_HOUR: ${REPORT_CUTOFF_HOUR}
+      HUGINN_WEBHOOK_SECRET: ${HUGINN_WEBHOOK_SECRET}
+    volumes:
+      - ./data/archives:/data/archives
+    depends_on:
+      - postgres
+
+  mailer:
+    build: ./mailer
+    environment:
+      MAILER_FROM: ${MAILER_FROM}
+      MAILER_PROVIDER: ${MAILER_PROVIDER}
+      SES_REGION: ${SES_REGION}
+      MAILGUN_DOMAIN: ${MAILGUN_DOMAIN}
+      MAILGUN_API_KEY: ${MAILGUN_API_KEY}
+      UNSUBSCRIBE_SECRET: ${UNSUBSCRIBE_SECRET}
+    depends_on:
+      - redis
+
+  billing:
+    build: ./billing
+    environment:
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      STRIPE_PRICE_FREE: ${STRIPE_PRICE_FREE}
+      STRIPE_PRICE_PAID: ${STRIPE_PRICE_PAID}
+      STRIPE_PRICE_PRO: ${STRIPE_PRICE_PRO}
+    depends_on:
+      - postgres
+
+  admin:
+    build: ./admin
+    ports:
+      - "8010:8010"
+
+volumes:
+  postgres_data:
+  redis_data:

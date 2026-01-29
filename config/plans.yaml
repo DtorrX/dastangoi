@@ -1,0 +1,10 @@
+plans:
+  free:
+    cadence: weekly
+    features: [limited_sources]
+  paid:
+    cadence: daily
+    features: [custom_keywords, filters, pdf_export]
+  pro:
+    cadence: daily
+    features: [slack_webhook, csv_export, watchlists]

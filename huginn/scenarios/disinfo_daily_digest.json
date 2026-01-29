@@ -1,0 +1,98 @@
+{
+  "name": "Disinfo Daily Digest",
+  "description": "Signals-only detection pipeline for possible coordinated narratives.",
+  "agents": [
+    {
+      "name": "RSS Sources",
+      "type": "Agents::RssAgent",
+      "schedule": "every_15m",
+      "options": {
+        "expected_update_period_in_days": 1,
+        "urls": [
+          "https://www.gdeltproject.org/data/updates/GDELT.GKG.2.1.LATEST.zip",
+          "https://www.state.gov/rss/feed/"
+        ]
+      }
+    },
+    {
+      "name": "Normalize Events",
+      "type": "Agents::JavaScriptAgent",
+      "schedule": "every_5m",
+      "options": {
+        "script": "// See huginn/templates/agent_js_normalize.js",
+        "expected_receive_period_in_days": 1
+      }
+    },
+    {
+      "name": "DeDupe",
+      "type": "Agents::DeDuplicationAgent",
+      "schedule": "every_5m",
+      "options": {
+        "property": "dedupe_hash",
+        "expected_receive_period_in_days": 1
+      }
+    },
+    {
+      "name": "Enrich",
+      "type": "Agents::JavaScriptAgent",
+      "schedule": "every_5m",
+      "options": {
+        "script": "// See huginn/templates/agent_js_enrich.js",
+        "expected_receive_period_in_days": 1
+      }
+    },
+    {
+      "name": "LLM Classifier",
+      "type": "Agents::JavaScriptAgent",
+      "schedule": "every_10m",
+      "options": {
+        "script": "// See huginn/templates/agent_js_score.js",
+        "expected_receive_period_in_days": 1
+      }
+    },
+    {
+      "name": "Coordination Heuristics",
+      "type": "Agents::JavaScriptAgent",
+      "schedule": "every_10m",
+      "options": {
+        "script": "// See huginn/templates/agent_js_score.js",
+        "expected_receive_period_in_days": 1
+      }
+    },
+    {
+      "name": "Alert High Signal",
+      "type": "Agents::TriggerAgent",
+      "schedule": "every_10m",
+      "options": {
+        "rules": [
+          {
+            "type": "field>=value",
+            "value": 0.7,
+            "path": "$.signal_score",
+            "name": "signal_score"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Daily Rollup Trigger",
+      "type": "Agents::ScheduleAgent",
+      "schedule": "cron:0 6 * * *",
+      "options": {
+        "timezone": "America/Toronto"
+      }
+    },
+    {
+      "name": "Report Webhook",
+      "type": "Agents::PostAgent",
+      "schedule": "every_1d",
+      "options": {
+        "post_url": "http://reporter:8001/ingest/huginn",
+        "content_type": "json",
+        "payload": {
+          "event": "{{event | to_json}}"
+        }
+      }
+    }
+  ]
+}

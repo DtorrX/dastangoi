@@ -1,0 +1,12 @@
+{
+  "name": "RSS Sources",
+  "type": "Agents::RssAgent",
+  "schedule": "every_15m",
+  "options": {
+    "expected_update_period_in_days": 1,
+    "urls": [
+      "https://www.state.gov/rss/feed/",
+      "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+    ]
+  }
+}

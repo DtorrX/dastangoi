@@ -1,0 +1,12 @@
+{
+  "name": "Report Webhook",
+  "type": "Agents::PostAgent",
+  "schedule": "every_1d",
+  "options": {
+    "post_url": "http://reporter:8001/ingest/huginn",
+    "content_type": "json",
+    "payload": {
+      "event": "{{event | to_json}}"
+    }
+  }
+}

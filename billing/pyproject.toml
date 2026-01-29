@@ -1,0 +1,5 @@
+[project]
+name = "billing"
+version = "0.1.0"
+description = "Stripe Checkout + webhook handling"
+requires-python = ">=3.11"
